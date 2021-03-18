@@ -1,0 +1,165 @@
+<div class="traits">
+    {{#if isNPC}}
+    <!--
+    <div class="form-group">
+        <label>{{localize "bfrpg.Size"}}</label>
+        <select class="actor-size" name="data.traits.size">
+            {{#select data.traits.size}}
+            {{#each config.actorSizes as |label size|}}
+                <option value="{{size}}">{{label}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
+    -->
+
+    <div class="form-group ">
+        <label>{{localize "bfrpg.MovementConfig"}}</label>
+        <a class="configure-movement" title="{{localize 'bfrpg.MovementConfig'}}"><i class="fas fa-cog"></i></a>
+    </div>
+    {{/if}}
+
+    {{#unless isVehicle}}
+    <div class="form-group {{#unless data.traits.senses}}inactive{{/unless}}">
+        <label>{{localize "bfrpg.Senses"}}</label>
+        <input type="text" name="data.traits.senses" value="{{data.traits.senses}}" placeholder="{{ localize 'bfrpg.None' }}"/>
+    </div>
+
+    <div class="form-group {{data.traits.languages.cssClass}}">
+        <label>{{localize "bfrpg.Languages"}}</label>
+        <a class="trait-selector" data-options="languages" data-target="data.traits.languages">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.languages.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+    {{/unless}}
+
+
+    {{#if isCharacter}}
+    <div class="form-group {{data.traits.weaponProf.cssClass}}">
+        <label>{{localize "bfrpg.TraitWeaponProf"}}</label>
+    <!--    <a class="trait-selector" data-options="WeaponProficiencies" data-target="data.traits.weaponProf">
+            <i class="fas fa-edit"></i>
+        </a>  -->
+        <ul class="traits-list">
+        {{#each data.traits.weaponProf.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <div class="form-group {{data.traits.specialAttack.cssClass}}">
+        <label>{{localize "bfrpg.SpecialAttack"}}</label>
+        <a class="trait-selector" data-options="SpecialAttacks" data-target="data.traits.specialAttack">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.specialAttack.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+
+    {{#if isCharacter}}
+    <div class="form-group {{data.traits.armorProf.cssClass}}">
+        <label>{{localize "bfrpg.TraitArmorProf"}}</label>
+    <!--    <a class="trait-selector" data-options="ArmorProficiencies" data-target="data.traits.armorProf">
+            <i class="fas fa-edit"></i>
+        </a>  -->
+        <ul class="traits-list">
+        {{#each data.traits.armorProf.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <div class="form-group {{data.traits.specialDefense.cssClass}}">
+        <label>{{localize "bfrpg.SpecialDefense"}}</label>
+        <a class="trait-selector" data-options="SpecialDefenses" data-target="data.traits.specialDefense">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.specialDefense.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+
+    <div class="form-group {{data.traits.damageResistance.cssClass}}">
+        <label>{{localize "bfrpg.DamRes"}}</label>
+        <a class="trait-selector" data-options="damageResistanceTypes" data-target="data.traits.damageResistance">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.damageResistance.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+
+    <div class="form-group {{data.traits.damageVulnerability.cssClass}}">
+        <label>{{localize "bfrpg.DamVuln"}}</label>
+        <a class="trait-selector" data-options="damageResistanceTypes" data-target="data.traits.damageVulnerability">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.damageVulnerability.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+
+
+    <div class="form-group {{data.traits.damageImmunity.cssClass}}">
+        <label>{{localize "bfrpg.DamImm"}}</label>
+        <a class="trait-selector" data-options="damageResistanceTypes" data-target="data.traits.damageImmunity">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.damageImmunity.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+    
+
+    {{#if isCharacter}}
+    <div class="form-group {{data.traits.racialAbility.cssClass}}">
+        <label>{{localize "bfrpg.RacialAbilities"}}</label>
+        <a class="trait-selector" data-options="RacialAbilities" data-target="data.traits.racialAbility">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.racialAbility.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    
+    <div class="form-group {{data.traits.miscTrait.cssClass}}">
+        <label>{{localize "bfrpg.MiscTraits"}}</label>
+        <a class="trait-selector" data-options="MiscTraits" data-target="data.traits.miscTrait">
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list">
+        {{#each data.traits.miscTrait.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+    </div>
+    
+    {{#unless isVehicle}}
+    <div class="form-group ">
+        <label>{{localize "bfrpg.SpecialTraits"}}</label>
+        <a class="configure-flags"><i class="fas fa-cog"></i></a>
+    </div>
+    {{/unless}}
+</div>
+

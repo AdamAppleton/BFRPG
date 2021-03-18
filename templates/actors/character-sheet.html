@@ -1,0 +1,466 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header flexrow">
+        <img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/>
+
+        <section class="header-details flexrow">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{actor.name}}" placeholder="{{ localize 'bfrpg.Name' }}"/>
+            </h1>
+
+            <aside class="header-exp flexcol">
+                <div class="charlevel">
+                    <label>{{ localize "bfrpg.Level" }} {{data.details.level}}</label>
+                    <span class="levels">{{classLabels}}</span>
+                </div>
+
+                {{#unless disableExperience}}
+                <div class="experience flexrow">
+                    <input name="data.details.xp.value" type="text" value="{{data.details.xp.value}}" placeholder="0" data-dtype="Number"/>
+                    <span class="sep">/</span>
+                    <span class="max">{{data.details.xp.max}}</span>
+                </div>
+                <div class="xpbar">
+                    <span class="bar" style="width: {{data.details.xp.pct}}%"></span>
+                </div>
+                {{/unless}}
+            </aside>
+
+            {{!-- Character Summary --}}
+            <ul class="summary flexrow">
+                <!--  
+                <li>
+                    <input type="text" name="data.details.race" value="{{data.details.race}}" placeholder="{{ localize 'bfrpg.Race' }}"/>
+                </li>
+                <li>
+                    <input type="text" name="data.details.background" value="{{data.details.background}}" placeholder="{{ localize 'bfrpg.Background' }}"/>
+                </li>
+                <li>
+                    <input type="text" name="data.details.alignment" value="{{data.details.alignment}}" placeholder="{{ localize 'bfrpg.Alignment' }}"/>
+                </li>
+                <li class="proficiency">
+                    <span>{{ localize "bfrpg.Proficiency" }} {{numberFormat data.attributes.prof decimals=0 sign=true}}</span>
+                </li>  
+                -->
+                <li class="form-group">
+                    <select name="data.details.race">
+                        {{#select data.details.race}}
+                        {{#each config.races as |label race|}}
+                            <option value="{{race}}">{{label}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </li>
+                <li class="form-group">
+                    <select name="data.details.gender">
+                        {{#select data.details.gender}}
+                        {{#each config.gender as |label gender|}}
+                            <option value="{{gender}}">{{label}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </li>
+                <li class="form-group">
+                    <select name="data.details.alignment">
+                        {{#select data.details.alignment}}
+                        {{#each config.alignments as |label alignment|}}
+                            <option value="{{alignment}}">{{label}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </li>
+                <li class="form-group">
+                    <select name="data.traits.size">
+                        {{#select data.traits.size}}
+                        {{#each config.actorSizes as |label size|}}
+                            <option value="{{size}}">{{label}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </li>
+            </ul>
+
+            {{!-- Header Attributes --}}
+            <ul class="attributes flexrow">
+                <li class="attribute health">
+                    <h4 class="attribute-name box-title">{{ localize "bfrpg.HitPoints" }}</h4>
+                    <div class="attribute-value multiple">
+                        <input name="data.attributes.hp.value" type="text" value="{{data.attributes.hp.value}}" placeholder="10" data-dtype="Number"/>
+                        <span class="sep"> / </span>
+                        <input name="data.attributes.hp.max" type="text" value="{{data.attributes.hp.max}}" placeholder="10" data-dtype="Number"/>
+                    </div>
+                    <footer class="attribute-footer">
+                        <input name="data.attributes.hp.temp" type="text" class="temphp" placeholder="+{{ localize 'bfrpg.Temp' }}"
+                               value="{{data.attributes.hp.temp}}" data-dtype="Number"/>
+                        <input name="data.attributes.hp.tempmax" type="text" class="temphp" placeholder="+{{ localize 'bfrpg.Max' }}"
+                               value="{{data.attributes.hp.tempmax}}" data-dtype="Number"/>
+                    </footer>
+                </li>
+
+                <li class="attribute">
+                    <h4 class="attribute-name box-title">{{ localize "bfrpg.ArmorClass" }}</h4>
+                    <div class="attribute-value">
+                        <span>{{data.attributes.ac.value}}</span>
+                    </div>
+                    <footer class="attribute-footer">
+                        <span class="double-subattribute" title="Rear">Rear: {{data.attributes.ac.rear}}</span>
+                        <span class="double-subattribute" title="vs. Size L">vs. L: {{data.attributes.ac.vsL}}</span>
+                    </footer>
+                </li>
+
+                <li class="attribute">
+                    <h4 class="attribute-name box-title">{{ localize "bfrpg.Encumbrance" }}</h4>
+                    <div class="attribute-value">
+                        <span>{{data.attributes.encumbrance.value}} lbs.</span>
+                    </div>
+                    <footer class="attribute-footer">
+                        <span class="double-subattribute" title="Encumbrance Threshold">{{data.attributes.encumbrance.threshold}} lbs.</span>
+                        <span class="double-subattribute" title="Carry Limit">{{data.attributes.encumbrance.max}} lbs.</span>
+                    </footer>
+                </li>
+
+                <li class="attribute">
+                    <h4 class="attribute-name box-title">{{ localize "bfrpg.Speed" }}</h4>
+                    <div class="attribute-value">
+                        <span>{{data.attributes.movement.walk}} feet</span>
+                    </div>
+                    <footer class="attribute-footer">
+                        <span class="double-subattribute" title="Withdrawal"> Wdrl: {{data.attributes.movement.withdrawal}} </span> 
+                        <span class="double-subattribute" title="Running"> Run: {{data.attributes.movement.running}} </span>
+                    
+                    </footer>
+                </li>
+
+                <li class="attribute initiative">
+                    <h4 class="attribute-name box-title">{{ localize "bfrpg.Reaction" }}</h4>
+                    <div class="attribute-value">
+                        <span>{{numberFormat data.attributes.reaction.value decimals=0 sign=true}}</span>
+                    </div>
+                    <footer class="attribute-footer">
+                        <span>{{ localize "bfrpg.Modifier" }}</span>
+                        <input name="data.attributes.reaction.miscmod" type="text" placeholder="0" data-dtype="Number"
+                               value="{{numberFormat data.attributes.reaction.miscmod decimals=0 sign=true}}"/>
+                    </footer>
+                </li>
+
+                <!-- 
+                <li class="attribute">
+                    <h4 class="attribute-name box-title">
+                        {{ localize "bfrpg.Speed" }}
+                    </h4>
+                    <div class="attribute-value">
+                        <span>{{movement.primary}}</span>
+                    </div>
+                    <footer class="attribute-footer">
+                        <span>{{movement.special}}</span>
+                    </footer>
+                </li>
+
+                <li class="attribute initiative">
+                    <h4 class="attribute-name box-title rollable" data-action="rollInitiative">{{ localize "bfrpg.Initiative" }}</h4>
+                    <div class="attribute-value">
+                        <span>{{numberFormat data.attributes.init.total decimals=0 sign=true}}</span>
+                    </div>
+                    <footer class="attribute-footer">
+                        <span>{{ localize "bfrpg.Modifier" }}</span>
+                        <input name="data.attributes.init.value" type="text" data-dtype="Number" placeholder="0"
+                               value="{{numberFormat data.attributes.init.value decimals=0 sign=true}}"/>
+                    </footer>
+                </li>  
+                -->
+            </ul>
+        </section>
+    </header>
+
+    {{!-- Character Sheet Navigation --}}
+    <nav class="sheet-navigation tabs" data-group="primary">
+        <a class="item active" data-tab="attributes">{{ localize "bfrpg.Attributes" }}</a>
+        <a class="item" data-tab="skills">{{ localize "bfrpg.Skills" }}</a>
+        <a class="item" data-tab="inventory">{{ localize "bfrpg.Inventory" }}</a>
+        <a class="item" data-tab="features">{{ localize "bfrpg.Features" }}</a>
+        <a class="item" data-tab="spellbook">{{ localize "bfrpg.Spellbook" }}</a>
+        <a class="item" data-tab="effects">{{ localize "bfrpg.Effects" }}</a>
+        <a class="item" data-tab="biography">{{ localize "bfrpg.Biography" }}</a>
+    </nav>
+
+    {{!-- Character Sheet Body --}}
+    <section class="sheet-body">
+
+        <div class="tab attributes flexrow" data-group="primary" data-tab="attributes">
+
+            {{!-- Ability Scores --}}
+            <ul class="ability-scores flexrow">
+            {{#each data.abilities as |ability id|}}
+                <li class="ability {{#if ability.proficient}}proficient{{/if}}" data-ability="{{id}}">
+                    <h4 class="ability-name box-title rollable" title="Roll Ability Check">{{ability.label}}</h4>
+                    <input class="ability-score" name="data.abilities.{{id}}.value" type="number" value="{{ability.value}}" placeholder="10"/>
+                    <div class="ability-modifiers flexrow">
+                        <input class="ability-temp" name="data.abilities.{{id}}.tempScore" type="text" value="{{ability.tempScore}}" data-dtype="Number" placeholder="TEMP"/>
+                        <p> </p>
+                        <span class="ability-mod" title="Modifier">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+                        <!--
+                        <span class="ability-mod" title="Modifier">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+                        <input type="hidden" name="data.abilities.{{id}}.proficient" value="{{ability.proficient}}" data-dtype="Number"/>
+                        <a class="proficiency-toggle ability-proficiency" title="{{ localize 'bfrpg.Proficiency' }}">{{{ability.icon}}}</a>
+                        <span class="ability-save" title="Saving Throw">{{numberFormat ability.save decimals=0 sign=true}}</span>  
+                        -->
+                    </div>
+                </li>
+            {{/each}}
+            </ul>
+
+            <!-- 
+            {{!-- Skills --}}
+            <ul class="skills-list">
+            {{#each data.skills as |skill s|}}
+                <li class="skill flexrow {{#if skill.value}}proficient{{/if}}" data-skill="{{s}}">
+                    <input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/>
+                    <a class="proficiency-toggle skill-proficiency" title="{{skill.hover}}">{{{skill.icon}}}</a>
+                    <h4 class="skill-name rollable">{{skill.label}}</h4>
+                    <span class="skill-ability">{{skill.ability}}</span>
+                    <span class="skill-mod">{{numberFormat skill.total decimals=0 sign=true}}</span>
+                    <span class="skill-passive">({{skill.passive}})</span>
+                </li>
+            {{/each}}
+            </ul>  
+            -->
+
+            <section class="middle-pane flexcol"> 
+                {{!-- Saving Throws --}}
+                <ul class="saves-list">
+                    {{#each data.saves as |save id|}}
+                        <li class="save flexrow {{#if save.proficient}}proficient{{/if}}" data-save="{{id}}">
+                            <!-- <a class="proficiency-toggle save-proficiency" title="{{save.hover}}">{{{save.icon}}}</a>  -->
+                            <h4 class="save-name rollable" title="Roll Saving Throw">{{save.label}}</h4>
+                            <span class="save-value"> {{save.value}}</span>
+                            <input class="save-mod" name="data.saves.{{id}}.miscmod" type="text" value="{{save.miscmod}}" data-dtype="Number" placeholder="MOD"/>
+                            <span class="save-base" title="Race Modifier">{{numberFormat save.racemod decimals=0 sign=true}}</span>
+                            <span class="save-base" title="Base">{{numberFormat save.base decimals=0 sign=false}}</span>
+                        </li>
+                    {{/each}}
+                </ul> 
+
+                {{!-- Saving Throw Bonuses --}}
+                <ul class="saves-list1">
+                    <!-- <h4 >{{ localize "bfrpg.SaveBonuses" }}</h4>  -->
+                    {{#each data.savebonuses as |savebonus id|}}
+                    <li class="save flexrow">
+                      <h4>{{savebonus}}</h4>
+                    </li>
+                  {{/each}}
+                  </ul>
+
+                {{!-- Ability Check Target --}}
+                <ul class="saves-list1">
+                    <li class="save flexrow">
+                        <h4 >{{ localize "bfrpg.CheckTarget" }}</h4>
+                        <span class="save-value"> {{data.attributes.checkTarget}}</span>
+                        <span class="save-mod"> </span>   <!-- PLACEHOLDER -->
+                        <span class="save-base"> </span>   <!-- PLACEHOLDER -->
+                        <span class="save-base"> </span>   <!-- PLACEHOLDER -->
+                    </li>
+                </ul>
+
+                {{!-- Attack Bonuses --}}
+                <ul class="saves-list3">
+                    <li class="save flexrow">
+                        <h4 >{{ localize "bfrpg.AttackBonusMelee" }}</h4>
+                        <span class="save-value"> {{numberFormat data.attributes.AttackBonusMelee.value decimals=0 sign=true}}</span>
+                        <input class="save-mod" name="data.attributes.AttackBonusMelee.miscmod" type="text" value="{{data.attributes.AttackBonusMelee.miscmod}}" data-dtype="Number" placeholder="MOD"/>
+                        <!--  <span class="save-base" title="Race Modifier"> {{numberFormat data.attributes.AttackBonusMelee.racemod decimals=0 sign=true}}</span>  -->
+                        <span class="save-base">  </span>
+                        <span class="save-base" title="Base"> {{numberFormat data.attributes.AttackBonusMelee.base decimals=0 sign=true}}</span>
+                    </li>
+                    <li class="save flexrow">
+                        <h4 >{{ localize "bfrpg.AttackBonusRanged" }}</h4>
+                        <span class="save-value"> {{numberFormat data.attributes.AttackBonusRanged.value decimals=0 sign=true}}</span>
+                        <input class="save-mod" name="data.attributes.AttackBonusRanged.miscmod" type="text" value="{{data.attributes.AttackBonusRanged.miscmod}}" data-dtype="Number" placeholder="MOD"/>
+                        <span class="save-base" title="Race Modifier"> {{numberFormat data.attributes.AttackBonusRanged.racemod decimals=0 sign=true}}</span>
+                        <span class="save-base" title="Base"> {{numberFormat data.attributes.AttackBonusRanged.base decimals=0 sign=true}}</span>
+                    </li>
+                    <li class="save flexrow">
+                        <h4 >Range Modifier:  [Short +1  |  Medium 0  |  Long -2]</h4>
+                    </li>
+                    <li class="save flexrow">
+                        <h4 >{{ localize "bfrpg.DamageBonus" }}</h4>
+                        <span class="save-value"> {{numberFormat data.attributes.DamageBonus.value decimals=0 sign=true}}</span>
+                        <input class="save-mod" name="data.attributes.DamageBonus.miscmod" type="text" value="{{data.attributes.DamageBonus.miscmod}}" data-dtype="Number" placeholder="MOD"/>
+                        <span class="save-base">   </span>
+                        <span class="save-base">   </span>
+                        <!--  <span class="save-base" title="Race Modifier"> {{numberFormat data.attributes.DamageBonus.racemod decimals=0 sign=true}}</span>  -->
+                        <!--  <span class="save-base" title="Base"> {{numberFormat data.attributes.DamageBonus.base decimals=0 sign=true}}</span>  -->
+                    </li>
+                    <li class="save flexrow">
+                        <h4 >{{ localize "bfrpg.Initiative" }}</h4>
+                        <span class="save-value"> {{numberFormat data.attributes.init.value decimals=0 sign=true}}</span>
+                        <input class="save-mod" name="data.attributes.init.mod" type="text" value="{{data.attributes.init.mod}}" data-dtype="Number" placeholder="MOD"/>
+                        <span class="save-base" title="Race Modifier"> {{numberFormat data.attributes.init.racemod decimals=0 sign=true}}</span>
+                        <span class="save-base">   </span>
+                    </li>
+                </ul>
+
+                {{!-- Hit Dice --}}
+                <ul class="saves-list1">
+                    <li class="save flexrow">
+                        <h4 >{{classLabels}} {{ localize "bfrpg.HitDice" }}</h4>
+                        <span class="save-value" title="Hit Dice"> {{data.details.hitDice.value}} </span>
+                        <span class="save-value" title="CON Modifier"> {{numberFormat data.details.hitDice.conmod decimals=0 sign=true}}</span>
+                    </li>
+                </ul>
+
+                <ul class="saves-messagebox">
+                  <h4 >{{ localize "bfrpg.Messages" }}</h4>
+                  {{#each data.messages as |message id|}}
+                  <li class="message">
+                    <span>{{message}}</span>
+                  </li>
+                {{/each}}
+                </ul>
+            </section>  
+
+            <!--    -->
+
+            <section class="center-pane flexcol">
+
+                {{!-- Body Attributes --}}
+                <ul class="attributes flexrow">
+                    {{#each resources as |res|}}
+                    <li class="attribute resource">
+                        <h4 class="attribute-name box-title">
+                            <input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
+                                   placeholder="{{res.placeholder}}" />
+                        </h4>
+                        <div class="attribute-value">
+                            <!-- <label class="recharge checkbox">
+                                {{ localize "bfrpg.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
+                            </label>  -->
+
+                            <input name="data.resources.{{res.name}}.value" type="number" value="{{res.value}}" placeholder="0"/>
+                            <span class="sep"> / </span>
+                            <input name="data.resources.{{res.name}}.max" type="number" value="{{res.max}}" placeholder="0"/>
+
+                            <!-- <label class="recharge checkbox">
+                                {{ localize "bfrpg.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
+                            </label>  -->
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+
+                <div class="buttons">
+                    <div class="button flexrow">
+                        <a class="button long-rest">{{ localize "bfrpg.Rest" }}</a>
+                        <a class="button level-up">{{ localize "bfrpg.LevelUp" }}</a>
+                        <a class="button spare-button">{{ localize "bfrpg.SpareButton" }}</a>
+                        <a class="button char-builder">{{ localize "bfrpg.CharBuilder" }}</a>
+                    </div>
+                </div>
+
+                <!-- {{!-- Counters --}}
+                <div class="counters">
+                    <div class="counter flexrow death-saves">
+                        <h4 class="rollable" data-action="rollDeathSave">{{ localize "bfrpg.DeathSave" }}</h4>
+                        <div class="counter-value">
+                            <i class="fas fa-check"></i>
+                            <input name="data.attributes.death.success" type="number" placeholder="0"
+                                   value="{{data.attributes.death.success}}"/>
+                            <i class="fas fa-times"></i>
+                            <input name="data.attributes.death.failure" type="number" placeholder="0"
+                                   value="{{data.attributes.death.failure}}"/>
+                        </div>
+                    </div>
+                    <div class="counter flexrow exhaustion">
+                        <h4>{{ localize "bfrpg.Exhaustion" }}</h4>
+                        <div class="counter-value">
+                            <input name="data.attributes.exhaustion" type="number" placeholder="0"
+                                   value="{{data.attributes.exhaustion}}" />
+                        </div>
+                    </div>
+                    <div class="counter flexrow inspiration">
+                        <h4>{{ localize "bfrpg.Inspiration" }}</h4>
+                        <div class="counter-value">
+                            <input type="checkbox" name="data.attributes.inspiration" data-dtype="Boolean"
+                                   {{checked data.attributes.inspiration}}/>
+                        </div>
+                    </div>
+                </div>  -->
+
+                {{!-- Traits --}}
+                {{> "systems/bfrpg/templates/actors/parts/actor-traits.html"}}
+            </section>
+        </div>
+
+        {{!-- Skills Tab --}}
+        <div class="tab skills flexcol" data-group="primary" data-tab="skills">
+            {{#if isCleric}}
+            <ul class="saves-list">
+                {{#each data.classAbilities.turnUndead as |turn id|}}
+                    <li class="save flexrow" data-turnundead="{{id}}">
+                        <h4 class="turnUndead-name rollable" title="Roll Turn Undead">{{turn.label}}</h4>
+                        <span class="save-value"> {{turn.value}}</span>
+                        <span class="save-mod"> </span>   <!-- PLACEHOLDER -->
+                        <span class="save-base"> </span>   <!-- PLACEHOLDER -->
+                        <span class="save-base"> </span>   <!-- PLACEHOLDER -->
+                    </li>
+                {{/each}}
+            </ul> 
+            {{/if}}
+
+            {{#if isThief}}
+            <ul class="saves-list">
+                {{#each data.classAbilities.thiefSkills as |tskl id|}}
+                    <li class="save flexrow" data-thiefskill="{{id}}">
+                        <h4 class="thiefSkill-name rollable" title="Roll Skill Check">{{tskl.label}}</h4>
+                        <span class="save-value"> {{tskl.value}}%</span>
+                        <span class="save-mod"> </span>   <!-- PLACEHOLDER -->
+                        <span class="save-base"> </span>   <!-- PLACEHOLDER -->
+                        <span class="save-base"> </span>   <!-- PLACEHOLDER -->
+                    </li>
+                {{/each}}
+            </ul> 
+            
+            {{/if}}
+        </div>
+
+
+        {{!-- Inventory Tab --}}
+        <div class="tab inventory flexcol" data-group="primary" data-tab="inventory">
+            {{> "systems/bfrpg/templates/actors/parts/actor-inventory.html" sections=inventory}}
+        </div>
+
+        {{!-- Features Tab --}}
+        <div class="tab features flexcol" data-group="primary" data-tab="features">
+            {{> "systems/bfrpg/templates/actors/parts/actor-features.html" sections=features}}
+        </div>
+
+        {{!-- Spellbook Tab --}}
+        <div class="tab spellbook flexcol" data-group="primary" data-tab="spellbook">
+            {{> "systems/bfrpg/templates/actors/parts/actor-spellbook.html"}}
+        </div>
+
+        {{!-- Effects Tab --}}
+        <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+            {{> "systems/bfrpg/templates/actors/parts/active-effects.html"}}
+        </div>
+
+        {{!-- Biography Tab --}}
+        <div class="tab flexrow" data-group="primary" data-tab="biography">
+            <div class="characteristics flexcol">
+                <label>{{ localize "bfrpg.Appearance" }}</label>
+                <textarea name="data.details.appearance">{{data.details.appearance}}</textarea>
+                <label>{{ localize "bfrpg.PersonalityTraits" }}</label>
+                <textarea name="data.details.trait">{{data.details.trait}}</textarea>
+                <label>{{ localize "bfrpg.Ideals" }}</label>
+                <textarea name="data.details.ideal">{{data.details.ideal}}</textarea>
+                <label>{{ localize "bfrpg.Bonds" }}</label>
+                <textarea name="data.details.bond">{{data.details.bond}}</textarea>
+                <label>{{ localize "bfrpg.Flaws" }}</label>
+                <textarea name="data.details.flaw">{{data.details.flaw}}</textarea>
+            </div>
+            <div class="biography">
+                {{editor content=data.details.biography.value target="data.details.biography.value" button=true owner=owner editable=editable}}
+            </div>
+        </div>
+    </section>
+</form>

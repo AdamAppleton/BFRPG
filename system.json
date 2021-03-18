@@ -1,0 +1,120 @@
+{
+  "name": "bfrpg",
+  "title": "Basic Fantasy RPG",
+  "description": "A system for playing BFRPG in the Foundry Virtual Tabletop environment.",
+  "version": "0.01",
+  "author": "ChipMonkster",
+  "scripts": [],
+  "esmodules": ["bfrpg.js"],
+  "styles": ["bfrpg.css"],
+  "packs": [
+    {
+      "name": "weapons",
+      "label": "Weapons (BFRPG)",
+      "system": "bfrpg",
+      "path": "./packs/bfrpg/weapons.db",
+      "entity": "Item"
+    },
+    {
+      "name": "armor",
+      "label": "Armor (BFRPG)",
+      "system": "bfrpg",
+      "path": "./packs/bfrpg/armor.db",
+      "entity": "Item"
+    },
+    {
+      "name": "spells",
+      "label": "Spells (BFRPG)",
+      "system": "bfrpg",
+      "path": "./packs/bfrpg/spells.db",
+      "entity": "Item"
+    },
+    {
+      "name": "heroes",
+      "label": "Starter Heroes",
+      "system": "bfrpg",
+      "path": "./packs/heroes.db",
+      "entity": "Actor"
+    },
+    {
+      "name": "monsters",
+      "label": "Monsters (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/monsters.db",
+      "entity": "Actor"
+    },
+    {
+      "name": "items",
+      "label": "Items (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/items.db",
+      "entity": "Item"
+    },
+    {
+      "name": "tradegoods",
+      "label": "Trade Goods (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/tradegoods.db",
+      "entity": "Item"
+    },
+    {
+      "name": "spells5e",
+      "label": "Spells (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/spells.db",
+      "entity": "Item"
+    },
+    {
+      "name": "classes",
+      "label": "Classes (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/classes.db",
+      "entity": "Item"
+    },
+    {
+      "name": "classfeatures",
+      "label": "Class Features (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/classfeatures.db",
+      "entity": "Item"
+    },
+    {
+      "name": "races",
+      "label": "Racial Features (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/races.db",
+      "entity": "Item"
+    },
+    {
+      "name": "monsterfeatures",
+      "label": "Monster Features (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/monsterfeatures.db",
+      "entity": "Item"
+    },
+    {
+      "name": "rules",
+      "label": "Rules (SRD)",
+      "system": "bfrpg",
+      "path": "./packs/rules.db",
+      "entity": "JournalEntry"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "socket": true,
+  "gridDistance": 5,
+  "gridUnits": "ft",
+  "primaryTokenAttribute": "attributes.hp",
+  "secondaryTokenAttribute": null,
+  "minimumCoreVersion": "0.5.6",
+  "compatibleCoreVersion": "0.7.7",
+  "url": "",
+  "manifest": "",
+  "download": ""
+}
